@@ -42,16 +42,6 @@ void selection_sort(char *arr[], int n)
     }
 }
 
-void quick_sort(char *arr[], int low, int high)
-{
-    if (low < high)
-    {
-        int pivot = partition(arr, low, high);
-        quick_sort(arr, low, pivot - 1);
-        quick_sort(arr, pivot + 1, high);
-    }
-}
-
 int partition(char *arr[], int low, int high)
 {
     char *pivot = arr[high];
@@ -70,6 +60,16 @@ int partition(char *arr[], int low, int high)
     arr[i + 1] = arr[high];
     arr[high] = temp;
     return i + 1;
+}
+
+void quick_sort(char *arr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pivot = partition(arr, low, high);
+        quick_sort(arr, low, pivot - 1);
+        quick_sort(arr, pivot + 1, high);
+    }
 }
 
 int main()
