@@ -43,7 +43,7 @@ int main()
     pthread_t philosophers[NUM_PHILOSOPHERS];
     int ids[NUM_PHILOSOPHERS];
 
-    // Initialize semaphores
+    // Initialize semaphoress
     sem_init(&mutex, 0, 1);
     for (int i = 0; i < NUM_PHILOSOPHERS; i++)
     {
