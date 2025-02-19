@@ -11,7 +11,7 @@ int in = 0, out = 0;
 
 sem_t empty, full, mutex;
 
-void *producer(void *param)
+void *producer(void *arg)
 {
     int item;
     while (1)
@@ -33,7 +33,7 @@ void *producer(void *param)
     }
 }
 
-void *consumer(void *param)
+void *consumer(void *arg)
 {
     int item;
     while (1)
