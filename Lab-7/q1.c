@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <unistd.h>
 
 #define MAX_BUFFER_SIZE 5
 
@@ -10,7 +11,7 @@ int in = 0, out = 0;
 
 sem_t empty, full, mutex;
 
-void *producer(void *arg)
+void *producer(void *param)
 {
     int item;
     while (1)
@@ -32,7 +33,7 @@ void *producer(void *arg)
     }
 }
 
-void *consumer(void *arg)
+void *consumer(void *param)
 {
     int item;
     while (1)
