@@ -27,6 +27,23 @@ void sort_requests(int requests[], int n)
     }
 }
 
+// FCFS Scheduling
+void FCFS(int disk[], int n, int initial_position)
+{
+    int seek_count = 0;
+    int current_position = initial_position;
+
+    for (int i = 0; i < n; i++)
+    {
+        int cur_track = disk[i];
+        seek_count += abs_diff(current_position, cur_track);
+        printf("Move from %d to %d with seek distance %d\n", current_position, cur_track, abs_diff(current_position, cur_track));
+        current_position = cur_track;
+    }
+
+    printf("Total Seek Count: %d\n", seek_count);
+}
+
 // SSTF Scheduling
 void SSTF(int disk[], int n, int initial_position)
 {
@@ -196,6 +213,46 @@ void CLOOK(int disk[], int n, int initial_position)
     printf("Total Seek Count: %d\n", seek_count);
 }
 
+// LOOK Scheduling
+void LOOK(int disk[], int n, int initial_position)
+{
+    sort_requests(disk, n);
+    int seek_count = 0;
+    int left[MAX], right[MAX];
+    int total_left = 0, total_right = 0;
+
+    // Divide the requests into left and right of the initial position
+    for (int i = 0; i < n; i++)
+    {
+        if (disk[i] < initial_position)
+        {
+            left[total_left++] = disk[i];
+        }
+        else
+        {
+            right[total_right++] = disk[i];
+        }
+    }
+
+    // Move towards left first
+    for (int i = total_left - 1; i >= 0; i--)
+    {
+        seek_count += abs_diff(initial_position, left[i]);
+        printf("Move from %d to %d with seek distance %d\n", initial_position, left[i], abs_diff(initial_position, left[i]));
+        initial_position = left[i];
+    }
+
+    // Move towards right
+    for (int i = 0; i < total_right; i++)
+    {
+        seek_count += abs_diff(initial_position, right[i]);
+        printf("Move from %d to %d with seek distance %d\n", initial_position, right[i], abs_diff(initial_position, right[i]));
+        initial_position = right[i];
+    }
+
+    printf("Total Seek Count: %d\n", seek_count);
+}
+
 // Main function to display the menu and call scheduling algorithms
 int main()
 {
@@ -203,15 +260,17 @@ int main()
     while (1)
     {
         printf("\nDisk Scheduling Algorithms\n");
-        printf("1. SSTF\n");
-        printf("2. SCAN\n");
-        printf("3. C-SCAN\n");
-        printf("4. C-LOOK\n");
-        printf("5. Exit\n");
+        printf("1. FCFS\n");
+        printf("2. SSTF\n");
+        printf("3. SCAN\n");
+        printf("4. C-SCAN\n");
+        printf("5. C-LOOK\n");
+        printf("6. LOOK\n");
+        printf("7. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
-        if (choice == 5)
+        if (choice == 7)
         {
             break;
         }
@@ -234,16 +293,22 @@ int main()
         switch (choice)
         {
         case 1:
-            SSTF(disk, n, initial_position);
+            FCFS(disk, n, initial_position);
             break;
         case 2:
-            SCAN(disk, n, initial_position, total_tracks);
+            SSTF(disk, n, initial_position);
             break;
         case 3:
-            CSCAN(disk, n, initial_position, total_tracks);
+            SCAN(disk, n, initial_position, total_tracks);
             break;
         case 4:
+            CSCAN(disk, n, initial_position, total_tracks);
+            break;
+        case 5:
             CLOOK(disk, n, initial_position);
+            break;
+        case 6:
+            LOOK(disk, n, initial_position);
             break;
         default:
             printf("Invalid choice\n");
